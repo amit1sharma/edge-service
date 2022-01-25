@@ -38,6 +38,10 @@ public class DepartmentController {
     @HystrixCommand(fallbackMethod = "fallback", commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000")
     })
+    /*@HystrixCommand(fallbackMethod = "fallback", commandProperties = {
+            @HystrixProperty(name = EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS, value = "4000")
+    })*/
+    
     @GetMapping("/java-employees")
     @CrossOrigin("*")
     public Collection<Customer> getJavaEmployee(){
