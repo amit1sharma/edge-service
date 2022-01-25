@@ -32,6 +32,9 @@ public class DepartmentController {
         return new ArrayList<>();
     }
 
+    /**
+    *** we can set method level timeout in properties as weel. check application.properties
+    **/
     @HystrixCommand(fallbackMethod = "fallback", commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000")
     })
