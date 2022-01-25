@@ -32,7 +32,9 @@ public class DepartmentController {
         return new ArrayList<>();
     }
 
-    @HystrixCommand(fallbackMethod = "fallback")
+    @HystrixCommand(fallbackMethod = "fallback", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000")
+    })
     @GetMapping("/java-employees")
     @CrossOrigin("*")
     public Collection<Customer> getJavaEmployee(){
