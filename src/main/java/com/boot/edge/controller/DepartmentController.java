@@ -1,15 +1,17 @@
 package com.boot.edge.controller;
 
-import com.boot.edge.enums.Department;
-import com.boot.edge.fiegn.CustomerClient;
-import com.boot.edge.model.Customer;
+import com.boot.edge.model.Employee;
+import com.boot.edge.rest.EmployeeClient;
+import com.boot.edge.service.DepartmentService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -35,12 +37,13 @@ public class DepartmentController {
     /**
     *** we can set method level timeout in properties as weel. check application.properties
     **/
+    @Override
     @HystrixCommand(fallbackMethod = "fallback", commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000")
+            @HystrixProperty(name = HystrixPropertiesManager.EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS, value = "1000"),
+
+            @HystrixProperty(name=HystrixPropertiesManager.CIRCUIT_BREAKER_REQUEST_VOLUME_THRESHOLD, value="5"),
+            @HystrixProperty(name=HystrixPropertiesManager.CIRCUIT_BREAKER_ERROR_THRESHOLD_PERCENTAGE, value="30")
     })
-    /*@HystrixCommand(fallbackMethod = "fallback", commandProperties = {
-            @HystrixProperty(name = EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS, value = "4000")
-    })*/
     
     @GetMapping("/java-employees")
     @CrossOrigin("*")
